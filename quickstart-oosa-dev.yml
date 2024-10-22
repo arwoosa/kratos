@@ -5,7 +5,7 @@ services:
       - postgres://cloud_test:1234@oosa-rdb:5432/identities?sslmode=disable&max_conns=20&max_idle_conns=4
     command: -c /home/ory/kratos.yml migrate sql -e --yes
     volumes:
-      - ./contrib/oosa:/home/ory
+      - ./contrib/oosa-dev:/home/ory
     restart: on-failure
     networks:
     - ${NETWORK_NAME}
@@ -15,8 +15,8 @@ services:
     depends_on:
       - kratos-migrate
     volumes:
-      - ./contrib/oosa:/home/ory
-    command: serve -c /home/ory/kratos.yml --watch-courier
+      - ./contrib/oosa-dev:/home/ory
+    command: serve -c /home/ory/kratos.yml --watch-courier --dev
     # labels:
     #   - traefik.http.services.admin.loadbalancer.server.port=4434
     #   - traefik.http.services.public.loadbalancer.server.port=4433

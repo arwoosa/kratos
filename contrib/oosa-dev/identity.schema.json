@@ -1,0 +1,64 @@
+{
+  "$id": "https://schemas.ory.sh/presets/kratos/quickstart/email-password/identity.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Person",
+  "type": "object",
+  "properties": {
+    "traits": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20,
+          "title": "Username",
+          "ory.sh/kratos": {
+            "credentials": {
+              "password": {
+                "identifier": true
+              }
+            }
+          }
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "maxLength": 320,
+          "title": "E-Mail",
+          "ory.sh/kratos": {
+            "credentials": {
+              "password": {
+                "identifier": true
+              }
+            },
+            "verification": {
+              "via": "email"
+            },
+            "recovery": {
+              "via": "email"
+            }
+          }
+        },
+        "picture": {
+          "type": "string",
+          "format": "uri",
+          "title": "Picture"
+        },
+        "language": {
+          "type": "string",
+          "format": "string",
+          "title": "Language",
+          "enum": ["zh-TW", "en"]
+        },
+        "name": {
+          "type": "string",
+          "title": "Display name",
+          "minLength": 1,
+          "maxLength": 20
+        }
+      },
+      "required": ["email", "username", "language", "name"],
+      "additionalProperties": false
+    }
+  }
+}
