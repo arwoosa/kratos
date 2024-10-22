@@ -1,0 +1,36 @@
+name: oosa
+services:
+  kratos-migrate:
+    image: oryd/kratos:latest
+    environment:
+      - postgres://cloud_test:1234@oosa-rdb:5432/identities?sslmode=disable&max_conns=20&max_idle_conns=4
+    command: -c /home/ory/kratos.yml migrate sql -e --yes
+    volumes:
+      - ./contrib/oosa:/home/ory
+    restart: on-failure
+    networks:
+      - oosa-network
+  kratos:
+    # image: oryd/kratos:v1.1.0-distroless
+    image: oryd/kratos:latest
+    depends_on:
+      - kratos-migrate
+    volumes:
+      - ./contrib/oosa:/home/ory
+    command: serve -c /home/ory/kratos.yml --watch-courier
+    # labels:
+    #   - traefik.http.services.admin.loadbalancer.server.port=4434
+    #   - traefik.http.services.public.loadbalancer.server.port=4433
+    #   - traefik.http.routers.public.rule=(Host(`dev-sso.docker.localhost`) || Host(`dev-sso.oosa.life`)) && PathPrefix(`/api`)
+    #   - traefik.http.routers.public.service=public
+    #   - traefik.http.routers.public.middlewares=api
+    networks:
+      - oosa-network
+networks:
+  oosa-network:
+    external: true
+    driver: bridge
+    name: oosa-network
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
