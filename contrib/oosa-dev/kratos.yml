@@ -120,7 +120,7 @@ hashers:
 
 session:
   cookie:
-    domain: oosa.life
+    domain: docker.localhost
     name: oosa_session
     same_site: Lax
     
