@@ -230,3 +230,6 @@ node_modules: package-lock.json
 .PHONY: kratos-config-e2e
 kratos-config-e2e:
 	sh ./test/e2e/render-kratos-config.sh
+
+dev-log:
+	docker logs -f $$(docker ps -aqf "name=oosa-services-dev-kratos-1")
