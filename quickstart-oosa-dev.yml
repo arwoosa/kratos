@@ -8,7 +8,7 @@ services:
       - ./contrib/oosa-dev:/home/ory
     restart: on-failure
     networks:
-    - ${NETWORK_NAME}
+    - dev-network
   kratos:
     # image: oryd/kratos:v1.1.0-distroless
     image: oryd/kratos:latest
@@ -17,11 +17,11 @@ services:
     volumes:
       - ./contrib/oosa-dev:/home/ory
     command: serve -c /home/ory/kratos.yml --watch-courier --dev
-    # labels:
-    #   - traefik.http.services.admin.loadbalancer.server.port=4434
-    #   - traefik.http.services.public.loadbalancer.server.port=4433
-    #   - traefik.http.routers.public.rule=(Host(`dev-sso.docker.localhost`) || Host(`dev-sso.oosa.life`)) && PathPrefix(`/api`)
-    #   - traefik.http.routers.public.service=public
-    #   - traefik.http.routers.public.middlewares=api
+    labels:
+      - traefik.http.services.admin.loadbalancer.server.port=4434
+      - traefik.http.services.public.loadbalancer.server.port=4433
+      - traefik.http.routers.public.rule=(Host(`dev-sso.docker.localhost`) || Host(`dev-sso.oosa.life`) || Host(`dev-sso.in-cloud.tw`)) && PathPrefix(`/api`)
+      - traefik.http.routers.public.service=public
+      - traefik.http.routers.public.middlewares=api
     networks:
-    - ${NETWORK_NAME}
+    - dev-network

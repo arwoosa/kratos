@@ -6,8 +6,9 @@ else
   {
     identity: {
       traits: {
+        username: claims.sub,
         email: claims.email,
-        name: claims.given_name +  claims.family_name,
+        name: claims.given_name + " " + claims.family_name,
         picture: claims.picture
       },
     },

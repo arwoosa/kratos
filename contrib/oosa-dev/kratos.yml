@@ -4,12 +4,13 @@ dsn: postgres://cloud_test:1234@oosa-rdb:5432/identities?sslmode=disable&max_con
 
 serve:
   public:
-    base_url: http://oosa-sso.docker.localhost/api
+    base_url: http://dev-sso.docker.localhost/api
     host: 0.0.0.0
     cors:
       enabled: true
       allowed_origins:
         - http://*.docker.localhost
+        - http://dev-sso.docker.localhost
       allowed_methods:
         - POST
         - GET
@@ -28,31 +29,31 @@ serve:
     host: 0.0.0.0
 
 selfservice:
-  default_browser_return_url: http://oosa-sso.docker.localhost
+  default_browser_return_url: http://dev-sso.docker.localhost
   allowed_return_urls:
-    - http://oosa.docker.localhost
+    - http://dev-sso.docker.localhost
   flows:
     settings:
       required_aal: highest_available
-      ui_url: http://oosa-sso.docker.localhost/settings
+      ui_url: http://dev-sso.docker.localhost/settings
     error:
-      ui_url: http://oosa-sso.docker.localhost/error
+      ui_url: http://dev-sso.docker.localhost/error
     recovery:
       enabled: true
-      ui_url: http://oosa-sso.docker.localhost/recovery
+      ui_url: http://dev-sso.docker.localhost/recovery
       after:
-        default_browser_return_url: https://dev.oosa.life
+        default_browser_return_url: http://dev-sso.docker.localhost
     verification:
       enabled: true
-      ui_url: http://oosa-sso.docker.localhost/verification
+      ui_url: http://dev-sso.docker.localhost/verification
     logout:
       after:
-        default_browser_return_url: http://oosa-sso.docker.localhost/login
+        default_browser_return_url: http://dev-sso.docker.localhost/login
     login:
-      ui_url: http://oosa-sso.docker.localhost/login
+      ui_url: http://dev-sso.docker.localhost/login
       lifespan: 10m
     registration:
-      ui_url: http://oosa-sso.docker.localhost/registration
+      ui_url: http://dev-sso.docker.localhost/registration
       lifespan: 10m
       after:
         oidc:
