@@ -98,7 +98,7 @@ identity:
 courier:
   template_override_path: /home/ory/templates
   smtp:
-    connection_uri: smtps://mailslurper:587/?skip_ssl_verify=true
+    connection_uri: smtp://mailslurper:25/?disable_starttls=true
 
 log:
   level: debug
