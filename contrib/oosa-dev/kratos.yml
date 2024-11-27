@@ -4,13 +4,13 @@ dsn: postgres://cloud_test:1234@oosa-rdb:5432/identities?sslmode=disable&max_con
 
 serve:
   public:
-    base_url: http://dev-sso.docker.localhost/api
+    base_url: https://sso.oosa.docker/api
     host: 0.0.0.0
     cors:
       enabled: true
       allowed_origins:
-        - http://*.docker.localhost
-        - http://dev-sso.docker.localhost
+        - https://*.docker.localhost
+        - https://sso.oosa.docker
       allowed_methods:
         - POST
         - GET
@@ -29,9 +29,9 @@ serve:
     host: 0.0.0.0
 
 selfservice:
-  default_browser_return_url: http://dev-sso.docker.localhost
+  default_browser_return_url: https://sso.oosa.docker
   allowed_return_urls:
-    - http://dev-sso.docker.localhost
+    - https://sso.oosa.docker
   flows:
     settings:
       required_aal: highest_available
@@ -50,10 +50,10 @@ selfservice:
       after:
         default_browser_return_url: http://dev-sso.docker.localhost/login
     login:
-      ui_url: http://dev-sso.docker.localhost/login
+      ui_url: https://sso.oosa.docker/login
       lifespan: 10m
     registration:
-      ui_url: http://dev-sso.docker.localhost/registration
+      ui_url: https://sso.oosa.docker/registration
       lifespan: 10m
       after:
         oidc:
@@ -121,7 +121,7 @@ hashers:
 
 session:
   cookie:
-    domain: docker.localhost
+    domain: oosa.docker
     name: oosa_session
     same_site: Lax
     

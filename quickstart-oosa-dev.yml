@@ -1,6 +1,8 @@
 services:
   kratos-migrate:
     image: oryd/kratos:latest
+    depends_on:
+      - oosa-rdb
     environment:
       - postgres://cloud_test:1234@oosa-rdb:5432/identities?sslmode=disable&max_conns=20&max_idle_conns=4
     command: -c /home/ory/kratos.yml migrate sql -e --yes
@@ -16,12 +18,16 @@ services:
       - kratos-migrate
     volumes:
       - ./contrib/oosa-dev:/home/ory
-    command: serve -c /home/ory/kratos.yml --watch-courier --dev
+    command: serve -c /home/ory/kratos.yml --watch-courier
     labels:
+      - traefik.enable=true
       - traefik.http.services.admin.loadbalancer.server.port=4434
       - traefik.http.services.public.loadbalancer.server.port=4433
-      - traefik.http.routers.public.rule=(Host(`dev-sso.docker.localhost`) || Host(`dev-sso.oosa.life`) || Host(`dev-sso.in-cloud.tw`)) && PathPrefix(`/api`)
+      - traefik.http.routers.public.rule=(Host(`sso.oosa.docker`) || Host(`dev-sso.oosa.life`) || Host(`dev-sso.in-cloud.tw`)) && PathPrefix(`/api`)
+      - traefik.http.routers.public.entrypoints=websecure
+      - traefik.http.routers.public.tls=true
       - traefik.http.routers.public.service=public
+      - traefik.http.middlewares.api.stripprefix.prefixes=/api
       - traefik.http.routers.public.middlewares=api
     networks:
     - dev-network
