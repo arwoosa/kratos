@@ -18,6 +18,7 @@ services:
       - kratos-migrate
     volumes:
       - ./contrib/oosa:/home/ory
+      - /Users/peter/goproject/arwoosa/oosa-infra/services/identity/contrib/oosa/kratos.yaml:/home/ory/kratos.yml
     command: serve -c /home/ory/kratos.yml --watch-courier
     networks:
       - oosa-network
