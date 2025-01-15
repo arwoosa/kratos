@@ -26,6 +26,7 @@ import (
 
 	"github.com/ory/kratos/selfservice/hook/hooktest"
 	"github.com/ory/x/sqlxx"
+	"github.com/ory/x/uuidx"
 
 	"github.com/ory/kratos/hydra"
 	"github.com/ory/kratos/selfservice/sessiontokenexchange"
@@ -81,6 +82,8 @@ func TestStrategy(t *testing.T) {
 	routerA := x.NewRouterAdmin()
 	ts, _ := testhelpers.NewKratosServerWithRouters(t, reg, routerP, routerA)
 	invalid := newOIDCProvider(t, ts, remotePublic, remoteAdmin, "invalid-issuer")
+
+	orgID := uuidx.NewV4()
 	viperSetProviderConfig(
 		t,
 		conf,
@@ -1555,6 +1558,8 @@ func TestStrategy(t *testing.T) {
 
 			client := testhelpers.NewClientWithCookieJar(t, nil, nil)
 			loginFlow := newLoginFlow(t, returnTS.URL, time.Minute, flow.TypeBrowser)
+			loginFlow.OrganizationID = uuid.NullUUID{UUID: orgID, Valid: true}
+			require.NoError(t, reg.LoginFlowPersister().UpdateLoginFlow(context.Background(), loginFlow))
 
 			var linkingLoginFlow struct {
 				ID        string
@@ -1572,6 +1577,7 @@ func TestStrategy(t *testing.T) {
 				assert.True(t, gjson.GetBytes(body, "ui.nodes.#(attributes.name==identifier)").Exists(), "%s", body)
 				assert.True(t, gjson.GetBytes(body, "ui.nodes.#(attributes.name==password)").Exists(), "%s", body)
 				assert.Equal(t, "new-login-if-email-exist-with-password-strategy@ory.sh", gjson.GetBytes(body, "ui.messages.#(id==1010016).context.duplicateIdentifier").String())
+				assert.Equal(t, gjson.GetBytes(body, "organization_id").String(), orgID.String())
 				linkingLoginFlow.ID = gjson.GetBytes(body, "id").String()
 				linkingLoginFlow.UIAction = gjson.GetBytes(body, "ui.action").String()
 				linkingLoginFlow.CSRFToken = gjson.GetBytes(body, `ui.nodes.#(attributes.name=="csrf_token").attributes.value`).String()
@@ -1589,9 +1595,9 @@ func TestStrategy(t *testing.T) {
 				body, err := io.ReadAll(res.Body)
 				require.NoError(t, res.Body.Close())
 				require.NoError(t, err)
-				assert.Equal(t,
-					strconv.Itoa(int(text.ErrorValidationLoginLinkedCredentialsDoNotMatch)),
-					gjson.GetBytes(body, "ui.messages.0.id").String(),
+				assert.EqualValues(t,
+					text.ErrorValidationLoginLinkedCredentialsDoNotMatch,
+					gjson.GetBytes(body, "ui.messages.0.id").Int(),
 					prettyJSON(t, body),
 				)
 			})
