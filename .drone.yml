@@ -13,8 +13,8 @@ steps:
 #   - docker build -f .docker/Dockerfile-build -t oryd/kratos:test .
 - name: restart service
   commands:
-  - docker-compose -f quickstart-oosa-test.yml down
-  - docker-compose -f quickstart-oosa-test.yml up -d
+  - docker compose -f quickstart-oosa-test.yml down
+  - docker compose -f quickstart-oosa-test.yml up -d
 # - name: prune image
 #   commands:
 #   - docker image prune -f
