@@ -21,7 +21,6 @@ services:
     command: serve -c /home/ory/kratos.yaml --watch-courier
     networks:
       - oosa-network
-volumns:
 
 networks:
   oosa-network:
