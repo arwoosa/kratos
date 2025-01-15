@@ -15,9 +15,9 @@ steps:
   commands:
   - docker-compose -f quickstart-oosa-test.yml down
   - docker-compose -f quickstart-oosa-test.yml up -d
-- name: prune image
-  commands:
-  - docker image prune -f
+# - name: prune image
+#   commands:
+#   - docker image prune -f
 
 trigger:
   branch:
