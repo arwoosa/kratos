@@ -1,33 +1,43 @@
 services:
   kratos-migrate:
     image: oryd/kratos:latest
-    depends_on:
-      - oosa-rdb
     environment:
       - postgres://cloud_test:1234@oosa-rdb:5432/identities?sslmode=disable&max_conns=20&max_idle_conns=4
     command: -c /home/ory/kratos.yml migrate sql -e --yes
     volumes:
-      - ./contrib/oosa-dev:/home/ory
+      - ./contrib/oosa:/home/ory
     restart: on-failure
-    networks:
-    - dev-network
   kratos:
     # image: oryd/kratos:v1.1.0-distroless
-    image: oryd/kratos:latest
+    image: docker.io/oryd/kratos:latest
     depends_on:
       - kratos-migrate
     volumes:
-      - ./contrib/oosa-dev:/home/ory
+      - ./contrib/oosa:/home/ory
     command: serve -c /home/ory/kratos.yml --watch-courier
     labels:
       - traefik.enable=true
       - traefik.http.services.admin.loadbalancer.server.port=4434
       - traefik.http.services.public.loadbalancer.server.port=4433
       - traefik.http.routers.public.rule=(Host(`sso.oosa.docker`) || Host(`dev-sso.oosa.life`) || Host(`dev-sso.in-cloud.tw`)) && PathPrefix(`/api`)
-      - traefik.http.routers.public.entrypoints=websecure
-      - traefik.http.routers.public.tls=true
+      - traefik.http.routers.public.entrypoints=web
       - traefik.http.routers.public.service=public
       - traefik.http.middlewares.api.stripprefix.prefixes=/api
-      - traefik.http.routers.public.middlewares=api
-    networks:
-    - dev-network
+      - traefik.http.routers.public.middlewares=api    
+  kratos-selfservice-ui-node:
+    image: oryd/kratos-selfservice-ui-node:v1.3.1
+    environment:
+      - KRATOS_PUBLIC_URL=http://kratos:4433/
+      - KRATOS_BROWSER_URL=http://dev-sso.in-cloud.tw/api
+      - COOKIE_SECRET=changeme
+      - CSRF_COOKIE_NAME=ory_csrf_ui
+      - CSRF_COOKIE_SECRET=changeme
+    labels:
+    - traefik.enable=true
+    - traefik.http.routers.sso-ui.entrypoints=web
+    - traefik.http.routers.sso-ui.rule= Host(`dev-sso.in-cloud.tw`)
+    - traefik.http.services.sso-ui.loadbalancer.server.port=3000
+    - traefik.http.routers.sso-ui.service=sso-ui
+
+
+    

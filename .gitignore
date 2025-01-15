@@ -66,3 +66,6 @@ test/e2e/kratos.*.yml
 __debug_bin
 .debug.sqlite.db
 .last-run.json
+
+
+contrib/oosa/kratos.yaml
