@@ -4,10 +4,9 @@ services:
     image: oryd/kratos:test
     environment:
       - postgres://cloud_test:1234@oosa-rdb:5432/identities?sslmode=disable&max_conns=20&max_idle_conns=4
-    command: -c /home/ory/kratos.yml migrate sql -e --yes
+    command: -c /home/ory/kratos.yaml migrate sql -e --yes
     volumes:
-      - ./contrib/oosa:/home/ory
-      - /Users/peter/goproject/arwoosa/oosa-infra/services/identity/contrib/oosa/kratos.yaml:/home/ory/kratos.yml
+      - /Users/peter/goproject/arwoosa/oosa-infra/services/identity/contrib/oosa:/home/ory
     restart: on-failure
     networks:
       - oosa-network
@@ -18,11 +17,12 @@ services:
     depends_on:
       - kratos-migrate
     volumes:
-      - ./contrib/oosa:/home/ory
-      - /Users/peter/goproject/arwoosa/oosa-infra/services/identity/contrib/oosa/kratos.yaml:/home/ory/kratos.yml
-    command: serve -c /home/ory/kratos.yml --watch-courier
+      - /Users/peter/goproject/arwoosa/oosa-infra/services/identity/contrib/oosa:/home/ory
+    command: serve -c /home/ory/kratos.yaml --watch-courier
     networks:
       - oosa-network
+volumns:
+
 networks:
   oosa-network:
     external: true
