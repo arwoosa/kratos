@@ -1,0 +1,27 @@
+name: oosa-api-service
+services:
+  kratos-migrate:
+    image: oryd/kratos:test
+    environment:
+      - postgres://cloud_test:1234@oosa-rdb:5432/identities?sslmode=disable&max_conns=20&max_idle_conns=4
+    command: -c /home/ory/kratos.yml migrate sql -e --yes
+    volumes:
+      - ./contrib/oosa:/home/ory
+    restart: on-failure
+    networks:
+      - oosa-network
+  kratos:
+    # image: oryd/kratos:v1.1.0-distroless
+    image: oryd/kratos:test
+    restart: always
+    depends_on:
+      - kratos-migrate
+    volumes:
+      - ./contrib/oosa:/home/ory
+    command: serve -c /home/ory/kratos.yml --watch-courier
+    networks:
+      - oosa-network
+networks:
+  oosa-network:
+    external: true
+    name: network.oosa

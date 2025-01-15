@@ -1,0 +1,27 @@
+---
+kind: pipeline
+type: exec
+name: default
+
+platform:
+  os: darwin
+  arch: amd64
+
+steps:
+# - name: build image
+#   commands:
+#   - docker build -f .docker/Dockerfile-build -t oryd/kratos:test .
+- name: restart service
+  commands:
+  - docker-compose -f quickstart-oosa-test.yml down
+  - docker-compose -f quickstart-oosa-test.yml up -d
+- name: prune image
+  commands:
+  - docker image prune -f
+
+trigger:
+  branch:
+  - dev
+  event:
+  - push
+...
