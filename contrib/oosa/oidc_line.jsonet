@@ -1,3 +1,6 @@
+
+
+
 local claims = std.extVar('claims');
 
 if std.length(claims.sub) == 0 then
@@ -6,9 +9,12 @@ else
   {
     identity: {
       traits: {
+        all: claims,
         email: claims.email,
         name: claims.name,
-        picture: claims.picture
+        picture: claims.picture,
+        username: claims.sub,
+        language: "zh-TW"
       },
     },
   }
