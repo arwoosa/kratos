@@ -9,12 +9,9 @@ else
   {
     identity: {
       traits: {
-        all: claims,
         email: claims.email,
         name: claims.name,
-        picture: claims.picture,
-        username: claims.sub,
-        language: "zh-TW"
+        picture: claims.picture
       },
     },
   }
