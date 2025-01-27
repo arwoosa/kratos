@@ -67,6 +67,9 @@ spec:
             mountPath: /home/cfg/oidc_line.jsonet
             subPath: oidc_line.jsonet
           - name: identity-cfg
+            mountPath: /home/cfg/oidc_apple.jsonet
+            subPath: oidc_apple.jsonet
+          - name: identity-cfg
             mountPath: /home/cfg/templates/login_code/valid/email.body.gotmpl
             subPath: templates-login_code-valid-email.body.gotmpl
           - name: identity-cfg
@@ -136,6 +139,8 @@ spec:
             items:
               - key: identity.schema.json
                 path: identity.schema.json
+              - key: oidc_apple.jsonet
+                path: oidc_apple.jsonet
               - key: oidc_google.jsonet
                 path: oidc_google.jsonet
               - key: oidc_line.jsonet
