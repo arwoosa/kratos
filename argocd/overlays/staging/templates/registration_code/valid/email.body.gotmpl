@@ -1,0 +1,24 @@
+{{define "en"}}
+Hi,
+
+please complete your account registration by entering the following code:
+
+{{ .RegistrationCode }}
+{{end}}
+
+
+
+{{define "zh-TW"}}
+嗨，
+
+請輸入以上代碼完成您的註冊
+
+{{ .RegistrationCode }}
+{{end}}
+
+
+{{- if eq .Identity.metadata_public.lang "zh-TW" -}}
+{{ template "zh-TW" . }}
+{{- else -}}
+{{ template "en" . }}
+{{- end -}}

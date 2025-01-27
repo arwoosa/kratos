@@ -1,0 +1,182 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: identity
+  name: identity-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: identity
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: identity
+    spec:
+      imagePullSecrets:
+      - name: vultr-cr-credentials
+      containers:
+      - image: sjc.vultrcr.com/oosa/identity:v1.0.1
+        name: identity
+        command: ["kratos"]
+        args: ["serve", "-c", "/home/secrets/identity.json"]
+        livenessProbe:
+          httpGet:
+            path: /health/alive
+            port: 4433
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 6
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: 4433
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 6
+        env:
+        - name: DSN
+          valueFrom:
+            secretKeyRef:
+              name: identity-secrets
+              key: DNS
+        - name: COURIER_SMTP_CONNECTION_URI
+          valueFrom:
+            secretKeyRef:
+              name: identity-secrets
+              key: SMTP
+        volumeMounts:
+          - name: identity-secrets
+            mountPath: /home/secrets/identity.json
+            subPath: identity.json
+          - name: identity-cfg
+            mountPath: /home/cfg/identity.schema.json
+            subPath: identity.schema.json
+          - name: identity-cfg
+            mountPath: /home/cfg/oidc_google.jsonet
+            subPath: oidc_google.jsonet
+          - name: identity-cfg
+            mountPath: /home/cfg/oidc_line.jsonet
+            subPath: oidc_line.jsonet
+          - name: identity-cfg
+            mountPath: /home/cfg/templates/login_code/valid/email.body.gotmpl
+            subPath: templates-login_code-valid-email.body.gotmpl
+          - name: identity-cfg
+            mountPath: /home/cfg/templates/login_code/valid/email.body.plaintext.gotmpl
+            subPath: templates-login_code-valid-email.body.plaintext.gotmpl
+          - name: identity-cfg
+            mountPath: /home/cfg/templates/login_code/valid/email.subject.gotmpl
+            subPath: templates-login_code-valid-email.subject.gotmpl
+          - name: identity-cfg
+            mountPath: /home/cfg/templates/login_code/valid/sms.body.gotmpl
+            subPath: templates-login_code-valid-sms.body.gotmpl
+          - name: identity-cfg
+            mountPath: /home/cfg/templates/otp/sms.body.gotmpl
+            subPath: templates-otp-sms.body.gotmpl
+          - name: identity-cfg
+            mountPath: /home/cfg/templates/recovery/invalid/email.body.gotmpl
+            subPath: templates-recovery-invalid-email.body.gotmpl
+          - name: identity-cfg
+            mountPath: /home/cfg/templates/recovery/invalid/email.body.plaintext.gotmpl
+            subPath: templates-recovery-invalid-email.body.plaintext.gotmpl
+          - name: identity-cfg
+            mountPath: /home/cfg/templates/recovery/invalid/email.subject.gotmpl
+            subPath: templates-recovery-invalid-email.subject.gotmpl
+          - name: identity-cfg
+            mountPath: /home/cfg/templates/recovery/valid/email.body.gotmpl
+            subPath: templates-recovery-valid-email.body.gotmpl
+          - name: identity-cfg
+            mountPath: /home/cfg/templates/recovery/valid/email.body.plaintext.gotmpl
+            subPath: templates-recovery-valid-email.body.plaintext.gotmpl
+          - name: identity-cfg
+            mountPath: /home/cfg/templates/recovery/valid/email.subject.gotmpl
+            subPath: templates-recovery-valid-email.subject.gotmpl
+          - name: identity-cfg
+            mountPath: /home/cfg/templates/recovery_code/invalid/email.body.gotmpl
+            subPath: templates-recovery_code-invalid-email.body.gotmpl
+          - name: identity-cfg
+            mountPath: /home/cfg/templates/recovery_code/invalid/email.body.plaintext.gotmpl
+            subPath: templates-recovery_code-invalid-email.body.plaintext.gotmpl
+          - name: identity-cfg
+            mountPath: /home/cfg/templates/recovery_code/invalid/email.subject.gotmpl
+            subPath: templates-recovery_code-invalid-email.subject.gotmpl
+          - name: identity-cfg
+            mountPath: /home/cfg/templates/recovery_code/valid/email.body.gotmpl
+            subPath: templates-recovery_code-valid-email.body.gotmpl
+          - name: identity-cfg
+            mountPath: /home/cfg/templates/recovery_code/valid/email.body.plaintext.gotmpl
+            subPath: templates-recovery_code-valid-email.body.plaintext.gotmpl
+          - name: identity-cfg
+            mountPath: /home/cfg/templates/recovery_code/valid/email.subject.gotmpl
+            subPath: templates-recovery_code-valid-email.subject.gotmpl
+          - name: identity-cfg
+            mountPath: /home/cfg/templates/registration_code/valid/email.body.gotmpl
+            subPath: templates-registration_code-valid-email.body.gotmpl
+          - name: identity-cfg
+            mountPath: /home/cfg/templates/registration_code/valid/email.body.plaintext.gotmpl
+            subPath: templates-registration_code-valid-email.body.plaintext.gotmpl
+          - name: identity-cfg
+            mountPath: /home/cfg/templates/registration_code/valid/email.subject.gotmpl
+            subPath: templates-registration_code-valid-email.subject.gotmpl
+      volumes:
+        - name: identity-secrets
+          secret:  
+            secretName: identity-secrets
+        - name: identity-cfg
+          configMap: 
+            name: identity-configmap
+            items:
+              - key: identity.schema.json
+                path: identity.schema.json
+              - key: oidc_google.jsonet
+                path: oidc_google.jsonet
+              - key: oidc_line.jsonet
+                path: oidc_line.jsonet
+              - key: templates-login_code-valid-email.body.gotmpl
+                path: templates-login_code-valid-email.body.gotmpl
+              - key: templates-login_code-valid-email.body.plaintext.gotmpl
+                path: templates-login_code-valid-email.body.plaintext.gotmpl
+              - key: templates-login_code-valid-email.subject.gotmpl
+                path: templates-login_code-valid-email.subject.gotmpl
+              - key: templates-login_code-valid-sms.body.gotmpl
+                path: templates-login_code-valid-sms.body.gotmpl
+              - key: templates-otp-sms.body.gotmpl
+                path: templates-otp-sms.body.gotmpl
+              - key: templates-recovery-invalid-email.body.gotmpl
+                path: templates-recovery-invalid-email.body.gotmpl
+              - key: templates-recovery-invalid-email.body.plaintext.gotmpl
+                path: templates-recovery-invalid-email.body.plaintext.gotmpl
+              - key: templates-recovery-invalid-email.subject.gotmpl
+                path: templates-recovery-invalid-email.subject.gotmpl
+              - key: templates-recovery-valid-email.body.gotmpl
+                path: templates-recovery-valid-email.body.gotmpl
+              - key: templates-recovery-valid-email.body.plaintext.gotmpl
+                path: templates-recovery-valid-email.body.plaintext.gotmpl
+              - key: templates-recovery-valid-email.subject.gotmpl
+                path: templates-recovery-valid-email.subject.gotmpl
+              - key: templates-recovery_code-invalid-email.body.gotmpl
+                path: templates-recovery_code-invalid-email.body.gotmpl
+              - key: templates-recovery_code-invalid-email.body.plaintext.gotmpl
+                path: templates-recovery_code-invalid-email.body.plaintext.gotmpl
+              - key: templates-recovery_code-invalid-email.subject.gotmpl
+                path: templates-recovery_code-invalid-email.subject.gotmpl
+              - key: templates-recovery_code-valid-email.body.gotmpl
+                path: templates-recovery_code-valid-email.body.gotmpl
+              - key: templates-recovery_code-valid-email.body.plaintext.gotmpl
+                path: templates-recovery_code-valid-email.body.plaintext.gotmpl
+              - key: templates-recovery_code-valid-email.subject.gotmpl
+                path: templates-recovery_code-valid-email.subject.gotmpl
+              - key: templates-registration_code-valid-email.body.gotmpl
+                path: templates-registration_code-valid-email.body.gotmpl
+              - key: templates-registration_code-valid-email.body.plaintext.gotmpl
+                path: templates-registration_code-valid-email.body.plaintext.gotmpl
+              - key: templates-registration_code-valid-email.subject.gotmpl
+                path: templates-registration_code-valid-email.subject.gotmpl

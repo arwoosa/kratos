@@ -1,0 +1,38 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+configMapGenerator:
+- name: identity-configmap
+  behavior: merge
+  files:
+    - templates-login_code-valid-email.body.gotmpl=templates/login_code/valid/email.body.gotmpl
+    - templates-login_code-valid-email.body.plaintext.gotmpl=templates/login_code/valid/email.body.plaintext.gotmpl
+    - templates-login_code-valid-email.subject.gotmpl=templates/login_code/valid/email.subject.gotmpl
+    - templates-login_code-valid-sms.body.gotmpl=templates/login_code/valid/sms.body.gotmpl
+    - templates-otp-sms.body.gotmpl=templates/otp/sms.body.gotmpl
+    - templates-recovery-invalid-email.body.gotmpl=templates/recovery/invalid/email.body.gotmpl
+    - templates-recovery-invalid-email.body.plaintext.gotmpl=templates/recovery/invalid/email.body.plaintext.gotmpl
+    - templates-recovery-invalid-email.subject.gotmpl=templates/recovery/invalid/email.subject.gotmpl
+    - templates-recovery-valid-email.body.gotmpl=templates/recovery/valid/email.body.gotmpl
+    - templates-recovery-valid-email.body.plaintext.gotmpl=templates/recovery/valid/email.body.plaintext.gotmpl
+    - templates-recovery-valid-email.subject.gotmpl=templates/recovery/valid/email.subject.gotmpl
+    - templates-recovery_code-invalid-email.body.gotmpl=templates/recovery_code/invalid/email.body.gotmpl
+    - templates-recovery_code-invalid-email.body.plaintext.gotmpl=templates/recovery_code/invalid/email.body.plaintext.gotmpl
+    - templates-recovery_code-invalid-email.subject.gotmpl=templates/recovery_code/invalid/email.subject.gotmpl
+    - templates-recovery_code-valid-email.body.gotmpl=templates/recovery_code/valid/email.body.gotmpl
+    - templates-recovery_code-valid-email.body.plaintext.gotmpl=templates/recovery_code/valid/email.body.plaintext.gotmpl
+    - templates-recovery_code-valid-email.subject.gotmpl=templates/recovery_code/valid/email.subject.gotmpl
+    - templates-registration_code-valid-email.body.gotmpl=templates/registration_code/valid/email.body.gotmpl
+    - templates-registration_code-valid-email.body.plaintext.gotmpl=templates/registration_code/valid/email.body.plaintext.gotmpl
+    - templates-registration_code-valid-email.subject.gotmpl=templates/registration_code/valid/email.subject.gotmpl
+
+patches:
+- path: secrets.yaml
+- path: deploy_service.yaml
+- target:
+    kind: Deployment
+    name: identity-deployment
+  path: deploy_patch.json

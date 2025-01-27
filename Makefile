@@ -233,3 +233,14 @@ kratos-config-e2e:
 
 dev-log:
 	docker logs -f $$(docker ps -aqf "name=oosa-services-dev-kratos-1")
+
+.PHONY: docker-oosa
+docker-oosa:
+	DOCKER_BUILDKIT=1 DOCKER_CONTENT_TRUST=1 \
+	docker build -f .docker/Dockerfile-build \
+	--builder mybuilder \
+	--platform linux/amd64,linux/arm64 \
+	--build-arg=COMMIT=$(VCS_REF) --build-arg=BUILD_DATE=$(BUILD_DATE) \
+	-t sjc.vultrcr.com/oosa/identity:${IMAGE_TAG} \
+	-t sjc.vultrcr.com/oosa/identity:latest \
+	--push .

@@ -1,0 +1,56 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: identity-migration-job
+  labels:
+    controller: jobs
+spec:
+  parallelism: 1
+  template:
+    metadata:
+      creationTimestamp: null
+      name: identity-migration-job
+      labels:
+        app: jobs
+    spec:
+      restartPolicy: Never
+      imagePullSecrets:
+      - name: vultr-cr-credentials
+      containers:
+      - image: sjc.vultrcr.com/oosa/identity:v1.0.1
+        name: identity-migration
+        command: ["kratos"]
+        args: ["-c", "/home/secrets/identity.json" ,"migrate", "sql", "-e", "--yes"]
+        env:
+        - name: DSN
+          valueFrom:
+            secretKeyRef:
+              name: identity-secrets
+              key: DNS
+        volumeMounts:
+          - name: identity-secrets
+            mountPath: /home/secrets/identity.json
+            subPath: identity.json
+          - name: identity-cfg
+            mountPath: /home/cfg/identity.schema.json
+            subPath: identity.schema.json
+          - name: identity-cfg
+            mountPath: /home/cfg/oidc_google.jsonet
+            subPath: oidc_google.jsonet
+          - name: identity-cfg
+            mountPath: /home/cfg/oidc_line.jsonet
+            subPath: oidc_line.jsonet
+      volumes:
+        - name: identity-secrets
+          secret:  
+            secretName: identity-secrets
+        - name: identity-cfg
+          configMap: 
+            name: identity-configmap
+            items:
+              - key: identity.schema.json
+                path: identity.schema.json
+              - key: oidc_google.jsonet
+                path: oidc_google.jsonet
+              - key: oidc_line.jsonet
+                path: oidc_line.jsonet
