@@ -4,6 +4,8 @@ metadata:
   name: identity-migration-job
   labels:
     controller: jobs
+  annotations:
+    reloader.stakater.com/auto: "true"
 spec:
   parallelism: 1
   template:
