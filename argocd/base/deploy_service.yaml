@@ -17,8 +17,6 @@ spec:
       labels:
         app: identity
     spec:
-      imagePullSecrets:
-      - name: vultr-cr-credentials
       containers:
       - image: sjc.vultrcr.com/oosa/identity:v1.0.1
         name: identity
