@@ -15,7 +15,7 @@ spec:
       labels:
         app: jobs
     spec:
-      restartPolicy: Always
+      restartPolicy: OnFailure
       containers:
       - image: sjc.vultrcr.com/oosa/identity:v1.0.1
         name: identity-courier
