@@ -21,6 +21,8 @@ services:
     command: serve -c /home/ory/kratos.yaml --watch-courier
     networks:
       - oosa-network
+    ports:
+      - "4434:4434"
 
 networks:
   oosa-network:
