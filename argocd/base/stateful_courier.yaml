@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: identity-courier
+  labels:
+    app: identity-courier
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
