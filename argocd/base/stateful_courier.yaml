@@ -1,21 +1,20 @@
 apiVersion: batch/v1
-kind: Job
+kind: StatefulSet
 metadata:
-  name: identity-courier-job
-  labels:
-    controller: jobs
+  name: identity-courier
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
-  parallelism: 1
+  serviceName: "identity-courier"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: identity-courier
   template:
     metadata:
       creationTimestamp: null
-      name: identity-courier-job
-      labels:
-        app: jobs
+      name: identity-courier
     spec:
-      restartPolicy: OnFailure
       containers:
       - image: sjc.vultrcr.com/oosa/identity:v1.0.1
         name: identity-courier
