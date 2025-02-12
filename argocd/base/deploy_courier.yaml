@@ -3,25 +3,25 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    app: identity
-  name: identity-deployment
+    app: identity-courier
+  name: courier-deployment
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: identity
+      app: identity-courier
   strategy: {}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: identity
+        app: identity-courier
     spec:
       containers:
       - image: sjc.vultrcr.com/oosa/identity:v1.0.1
-        name: identity
+        name: identity-courier
         command: ["kratos"]
         args: ["courier", "watch","-c", "/home/secrets/identity.json"]
         livenessProbe:
