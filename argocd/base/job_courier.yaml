@@ -1,47 +1,26 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: batch/v1
+kind: Job
 metadata:
-  creationTimestamp: null
+  name: identity-courier-job
   labels:
-    app: identity-courier
-  name: courier-deployment
+    controller: jobs
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: identity-courier
-  strategy: {}
+  parallelism: 1
   template:
     metadata:
       creationTimestamp: null
+      name: identity-courier-job
       labels:
-        app: identity-courier
+        app: jobs
     spec:
+      restartPolicy: Always
       containers:
       - image: sjc.vultrcr.com/oosa/identity:v1.0.1
         name: identity-courier
         command: ["kratos"]
-        args: ["courier", "watch","-c", "/home/secrets/identity.json"]
-        livenessProbe:
-          httpGet:
-            path: /health/alive
-            port: 4433
-          initialDelaySeconds: 30
-          periodSeconds: 30
-          timeoutSeconds: 5
-          successThreshold: 1
-          failureThreshold: 6
-        readinessProbe:
-          httpGet:
-            path: /health/ready
-            port: 4433
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          timeoutSeconds: 5
-          successThreshold: 1
-          failureThreshold: 6
+        args: ["courier", "watch", "-c", "/home/secrets/identity.json"]
         env:
         - name: DSN
           valueFrom:
@@ -64,9 +43,6 @@ spec:
           - name: identity-cfg
             mountPath: /home/cfg/oidc_apple.jsonet
             subPath: oidc_apple.jsonet
-          - name: identity-secrets
-            mountPath: /home/secrets/identity.json
-            subPath: identity.json
           - name: identity-cfg
             mountPath: /home/cfg/templates/login_code/valid/email.body.gotmpl
             subPath: templates-login_code-valid-email.body.gotmpl
