@@ -53,6 +53,21 @@ spec:
             mountPath: /home/secrets/identity.json
             subPath: identity.json
           - name: identity-cfg
+            mountPath: /home/cfg/identity.schema.json
+            subPath: identity.schema.json
+          - name: identity-cfg
+            mountPath: /home/cfg/oidc_google.jsonet
+            subPath: oidc_google.jsonet
+          - name: identity-cfg
+            mountPath: /home/cfg/oidc_line.jsonet
+            subPath: oidc_line.jsonet
+          - name: identity-cfg
+            mountPath: /home/cfg/oidc_apple.jsonet
+            subPath: oidc_apple.jsonet
+          - name: identity-secrets
+            mountPath: /home/secrets/identity.json
+            subPath: identity.json
+          - name: identity-cfg
             mountPath: /home/cfg/templates/login_code/valid/email.body.gotmpl
             subPath: templates-login_code-valid-email.body.gotmpl
           - name: identity-cfg
@@ -120,6 +135,14 @@ spec:
           configMap: 
             name: identity-configmap
             items:
+              - key: identity.schema.json
+                path: identity.schema.json
+              - key: oidc_apple.jsonet
+                path: oidc_apple.jsonet
+              - key: oidc_google.jsonet
+                path: oidc_google.jsonet
+              - key: oidc_line.jsonet
+                path: oidc_line.jsonet
               - key: templates-login_code-valid-email.body.gotmpl
                 path: templates-login_code-valid-email.body.gotmpl
               - key: templates-login_code-valid-email.body.plaintext.gotmpl
