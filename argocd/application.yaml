@@ -13,7 +13,7 @@ spec:
     metadata:
       name: 'sso-identity-{{path.basename}}'
     spec:
-      project: oosa-sso
+      project: oosa
       source:
         repoURL: https://github.com/arwoosa/kratos.git
         targetRevision: cd
