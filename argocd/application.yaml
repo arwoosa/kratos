@@ -20,7 +20,7 @@ spec:
         path: '{{path}}'
       destination:
         server: https://kubernetes.default.svc
-        namespace: 'oosa-sso-{{path.basename}}'
+        namespace: 'oosa-sso'
       syncPolicy:
         automated:
           selfHeal: true
