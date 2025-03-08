@@ -16,7 +16,7 @@ spec:
           - clusters:
               selector:
                 matchLabels:
-                  type: '{{.path.basename}}'
+                  type: '{{path.basename}}'
   template: # used to generate Argo CD Application resources
     metadata:
       name: 'sso-identity-{{path.basename}}'
@@ -27,7 +27,7 @@ spec:
         targetRevision: cd
         path: '{{path}}'
       destination:
-        server: '{{.server}}'
+        server: '{{server}}'
         namespace: 'oosa-sso'
       syncPolicy:
         automated:

@@ -5,6 +5,6 @@ metadata:
 
 spec:
   strategy:
-    type: Rolling
+    type: RollingUpdate
 
     
