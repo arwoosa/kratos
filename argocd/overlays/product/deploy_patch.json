@@ -3,5 +3,10 @@
     "op": "replace",
     "path": "/spec/template/spec/containers/0/image",
     "value": "sjc.vultrcr.com/oosa/identity:v1.0.1"
+  },
+  {
+    "op": "replace",
+    "path": "/spec/replicas",
+    "value": 2
   }
 ]
