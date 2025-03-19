@@ -1,13 +1,9 @@
 
-name: go-code-coverage
+name: Redeploy dev service
 
 on:
   push:
-    branches: [ main ]
-
-permissions:
-  contents: write
-  issues: write 
+    branches: [ cd ]
 
 jobs:
   portainer:
