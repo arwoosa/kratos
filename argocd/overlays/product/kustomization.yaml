@@ -36,3 +36,7 @@ patches:
     kind: Deployment
     name: identity-deployment
   path: deploy_patch.json
+- target:
+    kind: StatefulSet
+    name: identity-courier
+  path: courier_patch.json
