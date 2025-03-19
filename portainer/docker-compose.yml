@@ -1,0 +1,37 @@
+services:
+  identity-migrate:
+    image: sjc.vultrcr.com/oosa/identity:v1.0.1
+    command: -c /secret/identity.json migrate sql -e --yes
+    container_name: identity-migrate
+    volumes:
+      - ${CONFIG_PATH}/identity:/config:ro
+      - ${SECRET_PATH}/identity.json:/secret/identity.json:ro
+    restart: on-failure
+  identity:
+    image: sjc.vultrcr.com/oosa/identity:v1.0.1
+    depends_on:
+      - identity-migrate
+    container_name: identity
+    volumes:
+      - ${CONFIG_PATH}/identity:/config:ro
+      - ${SECRET_PATH}/identity.json:/secret/identity.json:ro
+    command: serve -c /secret/identity.json --watch-courier
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.admin.loadbalancer.server.port=4434
+      - traefik.http.services.public.loadbalancer.server.port=4433
+      - traefik.http.routers.public.rule= Host(`sso-dev.oosa.life`) && PathPrefix(`/api`)
+      - traefik.http.routers.public.entrypoints=web
+      - traefik.http.routers.public.service=public
+      - traefik.http.routers.public.middlewares=stripprefix-api@file
+    healthcheck:
+      test: ["CMD", "kratos", "remote",  "status", "-e",  "http://localhost:4434"]
+      interval: 1s
+      timeout: 1s
+      retries: 10
+      start_period: 1s
+
+networks:
+  default:
+    name: oosa-network
+    external: true
