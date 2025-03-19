@@ -1,0 +1,19 @@
+
+name: go-code-coverage
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: write
+  issues: write 
+
+jobs:
+  portainer:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Update Service via Webhook
+      uses: newarifrh/portainer-service-webhook@v1
+      with:
+        webhook_url: ${{ secrets.WEBHOOK_URL }}
