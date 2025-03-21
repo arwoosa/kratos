@@ -9,9 +9,9 @@ else
   {
     identity: {
       traits: {
-        email: claims.email,
-        name: claims.name,
-        picture: claims.picture
+        [if 'email' in claims then 'email' else null]: claims.email,
+        [if 'name' in claims then 'name' else null]: claims.name,
+        [if 'picture' in claims then 'picture' else null]: claims.picture,
       },
     },
   }
