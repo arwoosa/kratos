@@ -12,9 +12,10 @@ else
         name: claims.name,
         picture: claims.picture
       },
+      verified_addresses: std.prune([
+        if 'email' in claims && claims.email_verified then { via: 'email', value: claims.email },
+      ]),
     },
-    verified_addresses: std.prune([
-      if 'email' in claims && claims.email_verified then { via: 'email', value: claims.email },
-    ]),
+    
   }
 
