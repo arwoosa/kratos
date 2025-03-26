@@ -124,6 +124,18 @@ spec:
           - name: identity-cfg
             mountPath: /home/cfg/templates/registration_code/valid/email.subject.gotmpl
             subPath: templates-registration_code-valid-email.subject.gotmpl
+          - name: identity-cfg
+            mountPath: /home/cfg/templates/verification_code/valid/email.body.gotmpl
+            subPath: templates-verification_code-valid-email.body.gotmpl
+          - name: identity-cfg
+            mountPath: /home/cfg/templates/verification_code/valid/email.body.plaintext.gotmpl
+            subPath: templates-verification_code-valid-email.body.plaintext.gotmpl
+          - name: identity-cfg
+            mountPath: /home/cfg/templates/verification_code/valid/email.subject.gotmpl
+            subPath: templates-verification_code-valid-email.subject.gotmpl
+          - name: identity-cfg
+            mountPath: /home/cfg/templates/verification_code/valid/sms.body.gotmpl
+            subPath: templates-verification_code-valid-sms.body.gotmpl
       volumes:
         - name: identity-secrets
           secret:  
