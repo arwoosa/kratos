@@ -38,7 +38,7 @@ services:
     volumes:
       - ./conf:/config:ro
       - ${SECRET_PATH}/identity_frontend.json:/secret/identity.json:ro
-    command: serve -c /secret/identity.json --watch-courier
+    command: serve -c /secret/identity.json --watch-courier --dev 
     labels:
       - traefik.enable=true
       - traefik.http.services.public-frontend.loadbalancer.server.port=4433
