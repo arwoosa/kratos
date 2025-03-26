@@ -41,12 +41,11 @@ services:
     command: serve -c /secret/identity.json --watch-courier
     labels:
       - traefik.enable=true
-      - traefik.http.services.admin.loadbalancer.server.port=4434
-      - traefik.http.services.public.loadbalancer.server.port=4433
-      - traefik.http.routers.public.rule= Host(`sso-frontend-dev.oosa.life`) && PathPrefix(`/api`)
-      - traefik.http.routers.public.entrypoints=web
-      - traefik.http.routers.public.service=public
-      - traefik.http.routers.public.middlewares=corsheader@file,stripprefix-api@file
+      - traefik.http.services.public-frontend.loadbalancer.server.port=4433
+      - traefik.http.routers.public-frontend.rule= Host(`sso-frontend-dev.oosa.life`) && PathPrefix(`/api`)
+      - traefik.http.routers.public-frontend.entrypoints=web
+      - traefik.http.routers.public-frontend.service=public-frontend
+      - traefik.http.routers.public-frontend.middlewares=corsheader@file,stripprefix-api@file
     healthcheck:
       test: ["CMD", "kratos", "remote",  "status", "-e",  "http://localhost:4434"]
       interval: 1s
