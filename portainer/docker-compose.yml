@@ -46,7 +46,7 @@ services:
       - traefik.http.routers.public.rule= Host(`sso-frontend-dev.oosa.life`) && PathPrefix(`/api`)
       - traefik.http.routers.public.entrypoints=web
       - traefik.http.routers.public.service=public
-      - traefik.http.routers.public.middlewares=cors@file,stripprefix-api@file
+      - traefik.http.routers.public.middlewares=corsheader@file,stripprefix-api@file
     healthcheck:
       test: ["CMD", "kratos", "remote",  "status", "-e",  "http://localhost:4434"]
       interval: 1s
