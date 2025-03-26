@@ -28,7 +28,10 @@ configMapGenerator:
     - templates-registration_code-valid-email.body.gotmpl=templates/registration_code/valid/email.body.gotmpl
     - templates-registration_code-valid-email.body.plaintext.gotmpl=templates/registration_code/valid/email.body.plaintext.gotmpl
     - templates-registration_code-valid-email.subject.gotmpl=templates/registration_code/valid/email.subject.gotmpl
-
+    - templates-verification_code-valid-email.body.gotmpl=templates/verification_code/valid/email.body.gotmpl
+    - templates-verification_code-valid-email.body.plaintext.gotmpl=templates/verification_code/valid/email.body.plaintext.gotmpl
+    - templates-verification_code-valid-email.subject.gotmpl=templates/verification_code/valid/email.subject.gotmpl
+    - templates-verification_code-valid-sms.body.gotmpl=templates/verification_code/valid/sms.body.gotmpl
 patches:
 - path: secrets.yaml
 - path: deploy_service.yaml
