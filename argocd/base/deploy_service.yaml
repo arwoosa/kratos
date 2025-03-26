@@ -192,3 +192,11 @@ spec:
                 path: templates-registration_code-valid-email.body.plaintext.gotmpl
               - key: templates-registration_code-valid-email.subject.gotmpl
                 path: templates-registration_code-valid-email.subject.gotmpl
+              - key: templates-verification_code-valid-email.body.gotmpl
+                path: templates-verification_code-valid-email.body.gotmpl
+              - key: templates-verification_code-valid-email.body.plaintext.gotmpl
+                path: templates-verification_code-valid-email.body.plaintext.gotmpl
+              - key: templates-verification_code-valid-email.subject.gotmpl
+                path: templates-verification_code-valid-email.subject.gotmpl
+              - key: templates-verification_code-valid-sms.body.gotmpl
+                path: templates-verification_code-valid-sms.body.gotmpl
