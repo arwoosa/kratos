@@ -1,7 +1,6 @@
-
-
-
-local claims = std.extVar('claims');
+local claims = {
+  email_verified: false,
+} + std.extVar('claims');
 
 if std.length(claims.sub) == 0 then
   error 'claim sub not set'
@@ -10,8 +9,11 @@ else
     identity: {
       traits: {
         [if 'email' in claims then 'email' else null]: claims.email,
-        [if 'name' in claims then 'name' else null]: claims.name,
-        [if 'picture' in claims then 'picture' else null]: claims.picture,
+        name: claims.name,
+        picture: claims.picture
       },
+      verified_addresses: std.prune([
+        if 'email' in claims && claims.email != '' then { via: 'email', value: claims.email },
+      ]),
     },
   }
