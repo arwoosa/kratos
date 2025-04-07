@@ -24,6 +24,10 @@ services:
       - traefik.http.routers.public.entrypoints=web
       - traefik.http.routers.public.service=public
       - traefik.http.routers.public.middlewares=stripprefix-api@file
+      - traefik.http.routers.admin.rule= Host(`sso-admin-dev.oosa.life`) && PathPrefix(`/api`)
+      - traefik.http.routers.admin.entrypoints=web
+      - traefik.http.routers.admin.service=admin
+      - traefik.http.routers.admin.middlewares=stripprefix-api@file
     healthcheck:
       test: ["CMD", "kratos", "remote",  "status", "-e",  "http://localhost:4434"]
       interval: 1s
