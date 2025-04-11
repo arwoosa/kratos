@@ -52,7 +52,7 @@ services:
       - traefik.http.routers.public-frontend.middlewares=corsheader@file,stripprefix-api@file
 
       - traefik.http.services.admin-frontend.loadbalancer.server.port=4434
-      - traefik.http.routers.admin-frontend.rule= Host(`sso-front-admin-dev.oosa.life`) && PathPrefix(`/api`)
+      - traefik.http.routers.admin-frontend.rule= Host(`sso-frontend-admin-dev.oosa.life`) && PathPrefix(`/api`)
       - traefik.http.routers.admin-frontend.entrypoints=web
       - traefik.http.routers.admin-frontend.service=admin-frontend
       - traefik.http.routers.admin-frontend.middlewares=stripprefix-api@file
