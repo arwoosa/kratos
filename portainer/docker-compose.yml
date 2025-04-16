@@ -17,7 +17,7 @@ services:
       - ${SECRET_PATH}/identity.json:/secret/identity.json:ro
     command: serve -c /secret/identity.json --watch-courier
     labels:
-      - traefik.enable=true
+      - traefik.enable=false
       - traefik.http.services.admin.loadbalancer.server.port=4434
       - traefik.http.services.public.loadbalancer.server.port=4433
       # - traefik.http.routers.public.rule= Host(`sso-dev.oosa.life`) && PathPrefix(`/api`)
@@ -44,7 +44,7 @@ services:
       - ${SECRET_PATH}/identity_frontend.json:/secret/identity.json:ro
     command: serve -c /secret/identity.json --watch-courier --dev 
     labels:
-      - traefik.enable=true
+      - traefik.enable=false
       - traefik.http.services.public-frontend.loadbalancer.server.port=4433
       - traefik.http.routers.public-frontend.rule= Host(`sso-frontend-dev.oosa.life`) && PathPrefix(`/api`)
       - traefik.http.routers.public-frontend.entrypoints=web
