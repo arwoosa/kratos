@@ -17,13 +17,13 @@ services:
       - ${SECRET_PATH}/identity.json:/secret/identity.json:ro
     command: serve -c /secret/identity.json --watch-courier
     labels:
-      - traefik.enable=false
-      - traefik.http.services.admin.loadbalancer.server.port=4434
-      - traefik.http.services.public.loadbalancer.server.port=4433
+      - traefik.enable=true
+      # - traefik.http.services.public.loadbalancer.server.port=4433
       # - traefik.http.routers.public.rule= Host(`sso-dev.oosa.life`) && PathPrefix(`/api`)
       # - traefik.http.routers.public.entrypoints=web
       # - traefik.http.routers.public.service=public
       # - traefik.http.routers.public.middlewares=stripprefix-api@file
+      - traefik.http.services.admin.loadbalancer.server.port=4434
       - traefik.http.routers.admin.rule= Host(`sso-admin-dev.oosa.life`) && PathPrefix(`/api`)
       - traefik.http.routers.admin.entrypoints=web
       - traefik.http.routers.admin.service=admin
@@ -44,13 +44,12 @@ services:
       - ${SECRET_PATH}/identity_frontend.json:/secret/identity.json:ro
     command: serve -c /secret/identity.json --watch-courier --dev 
     labels:
-      - traefik.enable=false
-      - traefik.http.services.public-frontend.loadbalancer.server.port=4433
-      - traefik.http.routers.public-frontend.rule= Host(`sso-frontend-dev.oosa.life`) && PathPrefix(`/api`)
-      - traefik.http.routers.public-frontend.entrypoints=web
-      - traefik.http.routers.public-frontend.service=public-frontend
-      - traefik.http.routers.public-frontend.middlewares=corsheader@file,stripprefix-api@file
-
+      - traefik.enable=true
+      # - traefik.http.services.public-frontend.loadbalancer.server.port=4433
+      # - traefik.http.routers.public-frontend.rule= Host(`sso-frontend-dev.oosa.life`) && PathPrefix(`/api`)
+      # - traefik.http.routers.public-frontend.entrypoints=web
+      # - traefik.http.routers.public-frontend.service=public-frontend
+      # - traefik.http.routers.public-frontend.middlewares=corsheader@file,stripprefix-api@file
       - traefik.http.services.admin-frontend.loadbalancer.server.port=4434
       - traefik.http.routers.admin-frontend.rule= Host(`sso-frontend-admin-dev.oosa.life`) && PathPrefix(`/api`)
       - traefik.http.routers.admin-frontend.entrypoints=web
