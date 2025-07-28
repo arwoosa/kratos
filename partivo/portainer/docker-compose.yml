@@ -1,5 +1,5 @@
 services:
-  identity-migrate:
+  partivo-identity-migrate:
     image: sjc.vultrcr.com/oosa/identity:1.1.0
     command: -c /secret/identity.json migrate sql -e --yes
     container_name: partivo-identity-migrate
@@ -7,7 +7,7 @@ services:
       - ./conf:/config:ro
       - ${SECRET_PATH}/identity.json:/secret/identity.json:ro
     restart: on-failure
-  identity:
+  partivo-identity:
     image: sjc.vultrcr.com/oosa/identity:1.1.0
     depends_on:
       - partivo-identity-migrate
