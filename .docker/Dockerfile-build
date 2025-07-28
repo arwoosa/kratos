@@ -4,7 +4,7 @@ RUN apt-get update && apt-get upgrade -y &&\
   mkdir -p /var/lib/sqlite
 
 WORKDIR /go/src/github.com/ory/kratos
-COPY --from=oryx . ../../x
+COPY oryx oryx
 
 COPY go.mod go.mod
 COPY go.sum go.sum

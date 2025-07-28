@@ -205,3 +205,14 @@ node_modules: package-lock.json
 .PHONY: kratos-config-e2e
 kratos-config-e2e:
 	sh ./test/e2e/render-kratos-config.sh
+
+.PHONY: docker-oosa
+docker-oosa:
+	DOCKER_BUILDKIT=1 DOCKER_CONTENT_TRUST=1 \
+	docker buildx build \
+	-f .docker/Dockerfile-build \
+	--platform linux/amd64,linux/arm64 \
+	--build-arg=COMMIT=$(VCS_REF) --build-arg=BUILD_DATE=$(BUILD_DATE) \
+	-t sjc.vultrcr.com/oosa/identity:${IMAGE_TAG} \
+	-t sjc.vultrcr.com/oosa/identity:latest \
+	--push .
