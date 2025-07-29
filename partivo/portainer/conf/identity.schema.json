@@ -38,7 +38,7 @@
           "enum": ["zh-TW", "en"]
         }
       },
-      "required": ["email", "language", "picture"],
+      "required": ["email"],
       "additionalProperties": false
     }
   }
